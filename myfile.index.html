@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pentagon Credit Union</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #004d00;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #003300;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background: #005700;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+            background: #004d00;
+            color: white;
+        }
+        .form-container {
+            margin: 20px 0;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            background: #004d00;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background: #005700;
+        }
+        .service-card {
+            margin: 10px;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-align: center;
+        }
+        .service-icon {
+            font-size: 50px; /* Adjust icon size */
+            color: #004d00; /* Icon color */
+            margin-bottom: 10px;
+        }
+        .popup {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 500;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Pentagon Credit Union</h1>
+    <p>Your trusted financial partner</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+    <a href="#faq">FAQ</a>
+</nav>
+
+<section id="login">
+    <h2>Login to Your Account</h2>
+    <div class="form-container">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+    </div>
+    <p id="loginMessage"></p>
+</section>
+
+<section id="userDashboard" class="hidden">
+    <h2>Your Dashboard</h2>
+    <p>Welcome back, <span id="usernameDisplay"></span>!</p>
+
+    <div class="service-list">
+        <h3>Our Services</h3>
+        <div class="service-card" onclick="showPopup('onlineBankingPopup')">
+            <i class="fas fa-laptop service-icon"></i>
+            <strong>Online Banking</strong>
+        </div>
+        <div class="service-card" onclick="showPopup('loansPopup')">
+            <i class="fas fa-money-bill-wave service-icon"></i>
+            <strong>Loans</strong>
+        </div>
+        <div class="service-card" onclick="showPopup('investmentPopup')">
+            <i class="fas fa-chart-line service-icon"></i>
+            <strong>Investment Services</strong>
+        </div>
+        <div class="service-card" onclick="showPopup('financialPlanningPopup')">
+            <i class="fas fa-calculator service-icon"></i>
+            <strong>Financial Planning</strong>
+        </div>
+        <div class="service-card" onclick="showPopup('customerSupportPopup')">
+            <i class="fas fa-headset service-icon"></i>
+            <strong>Customer Support</strong>
+        </div>
+    </div>
+
+    <div class="service-card" onclick="showPopup('accountBalancesPopup')">
+        <strong>View Account Balances</strong>
+    </div>
+</section>
+
+<!-- Account Balances Popup -->
+<div class="overlay" id="overlay" onclick="closePopups()"></div>
+<div class="popup" id="accountBalancesPopup">
+    <h3>Account Balances</h3>
+    <p>Select an account to view balance:</p>
+    <div class="service-card" onclick="showPopup('checkingPopup')">
+        <i class="fas fa-wallet service-icon"></i>
+        <strong>Checking Account</strong>
+    </div>
+    <div class="service-card" onclick="showPopup('savingsPopup')">
+        <i class="fas fa-piggy-bank service-icon"></i>
+        <strong>Savings Account</strong>
+    </div>
+    <button onclick="closePopup('accountBalancesPopup')">Close</button>
+</div>
+
+<!-- Checking Account Popup -->
+<div class="popup" id="checkingPopup">
+    <h3>Checking Account Balance</h3>
+    <p>$2,921,101.80</p>
+    <button onclick="closePopup('checkingPopup')">Close</button>
+</div>
+
+<!-- Savings Account Popup -->
+<div class="popup" id="savingsPopup">
+    <h3>Savings Account Balance</h3>
+    <p>$14,320,760.70</p>
+    <button onclick="closePopup('savingsPopup')">Close</button>
+</div>
+
+<!-- Other Popups -->
+<div class="popup" id="onlineBankingPopup">
+    <h3>Online Banking</h3>
+    <p>Access your accounts anytime, anywhere.</p>
+    <button onclick="closePopup('onlineBankingPopup')">Close</button>
+</div>
+<div class="popup" id="loansPopup">
+    <h3>Loans</h3>
+    <p>Competitive rates for personal and home loans.</p>
+    <button onclick="closePopup('loansPopup')">Close</button>
+</div>
+<div class="popup" id="investmentPopup">
+    <h3>Investment Services</h3>
+    <p>Grow your savings with expert advice.</p>
+    <button onclick="closePopup('investmentPopup')">Close</button>
+</div>
+<div class="popup" id="financialPlanningPopup">
+    <h3>Financial Planning</h3>
+    <p>Personalized strategies for your financial future.</p>
+    <button onclick="closePopup('financialPlanningPopup')">Close</button>
+</div>
+<div class="popup" id="customerSupportPopup">
+    <h3>Customer Support</h3>
+    <p>We're here to help 24/7.</p>
+    <button onclick="closePopup('customerSupportPopup')">Close</button>
+</div>
+
+<footer>
+    <p>&copy; 2024 Pentagon Credit Union. All rights reserved.</p>
+</footer>
+
+<script>
+    const hardcodedUser = {
+        username: "Macus33984",
+        password: "Marcusfrederick3398"
+    };
+
+    function login() {
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        if (username === hardcodedUser.username && password === hardcodedUser.password) {
+            document.getElementById('loginMessage').innerText = "Login successful!";
+            document.getElementById('userDashboard').classList.remove('hidden');
+            document.getElementById('login').classList.add('hidden');
+            document.getElementById('usernameDisplay').innerText = username;
+        } else {
+            document.getElementById('loginMessage').innerText = "Invalid username or password.";
+        }
+    }
+
+    function showPopup(popupId) {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById(popupId).style.display = 'block';
+    }
+
+    function closePopup(popupId) {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById(popupId).style.display = 'none';
+    }
+
+    function closePopups() {
+        const popups = document.querySelectorAll('.popup');
+        const overlay = document.getElementById('overlay');
+        popups.forEach(popup => popup.style.display = 'none');
+        overlay.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
